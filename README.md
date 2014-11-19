@@ -38,12 +38,21 @@ This will create the following fallback app store links:
 **iOS:** `itms-apps://itunes.apple.com/app/myapp/id123456789?mt=8`    
 **Android:** `https://play.google.com/store/apps/details?id=com.myapp.android`
 
+#### Options
+
 Optionally, you can specify a `iOS.storeUrl` or `android.storeUrl` to override the fallback redirect.
 ```js
 deeplink.setup({
     iOS: {
         storeUrl: "http://...",
     }
+});
+```
+
+You can also skip the app store fallback altogether if you want by specifying `fallback: false`
+```js
+deeplink.setup({
+    fallback: false
 });
 ```
 

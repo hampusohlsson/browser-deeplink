@@ -34,6 +34,7 @@
     var defaults = {
         iOS: {},
         android: {},
+        fallback: true,
         delay: 1000,
         delta: 500
     }
@@ -174,9 +175,11 @@
             return;
         }
 
-        timeout = setTimeout(openAppStore(Date.now()), settings.delay);
+        if (settings.fallback) {
+            timeout = setTimeout(openAppStore(Date.now()), settings.delay);
+        }
+        
         var iframe = document.createElement("iframe");
-
         iframe.onload = function() {
             clearTimeout(timeout);
             iframe.parentNode.removeChild(iframe);
