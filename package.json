@@ -1,0 +1,19 @@
+{
+  "name": "browser-deeplink",
+  "version": "1.0.0",
+  "description": "Redirect mobile website users to your native iOS and/or Android app ",
+  "main": "browser-deeplink.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hampusohlsson/browser-deeplink"
+  },
+  "author": "Hampus Ohlsson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hampusohlsson/browser-deeplink/issues"
+  },
+  "homepage": "https://github.com/hampusohlsson/browser-deeplink"
+}
