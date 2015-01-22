@@ -77,7 +77,7 @@
      * @returns {String} Play store https:// link
      */
     var getStoreURLAndroid = function() {
-        var baseurl = "https://play.google.com/store/apps/details?id=";
+        var baseurl = "market://details?id=";
         var id = settings.android.appId;
         return id ? (baseurl + id) : null;        
     }
@@ -145,7 +145,7 @@
             var link = getStoreLink();
             var wait = settings.delay + settings.delta;
             if (typeof link === "string" && (Date.now() - ts) < wait) {
-                document.location.href = link;
+                window.location.href = link;
             }
         }
     }
@@ -175,6 +175,12 @@
             return;
         }
 
+        if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
+            var matches = uri.match(/([^:]+):\/\/(.+)$/i);
+            uri = "intent://" + matches[2] + "#Intent;scheme=" + matches[1];
+            uri += ";package=" + settings.android.appId + ";end";
+        }
+
         if (settings.fallback) {
             timeout = setTimeout(openAppStore(Date.now()), settings.delay);
         }
@@ -183,7 +189,7 @@
         iframe.onload = function() {
             clearTimeout(timeout);
             iframe.parentNode.removeChild(iframe);
-            document.location.href = uri;
+            window.location.href = uri;
         };
 
         iframe.src = uri;
@@ -192,7 +198,6 @@
     }
 
     // Public API
-
     return {
         setup: setup,
         open: open
