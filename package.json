@@ -1,6 +1,6 @@
 {
   "name": "browser-deeplink",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Redirect mobile website users to your native iOS and/or Android app ",
   "main": "browser-deeplink.js",
   "scripts": {
