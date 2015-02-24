@@ -177,8 +177,8 @@
 
         if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
             var matches = uri.match(/([^:]+):\/\/(.+)$/i);
-            uri = "intent://" + matches[2] + "#Intent;scheme=" + matches[1];
-            uri += ";package=" + settings.android.appId + ";end";
+            uri = "intent://" + matches[2] + ";package=" + settings.android.appId;
+            uri += "#Intent;scheme=" + matches[1] + ";end";
         }
 
         if (settings.fallback) {
