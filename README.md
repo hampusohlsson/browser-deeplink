@@ -56,6 +56,13 @@ deeplink.setup({
 });
 ```
 
+In case you want to register your android app on your http(s) links directly you can disable deeplinking for android  by specifying `androidDisabled: true`
+```js
+deeplink.setup({
+    androidDisabled: true
+});
+```
+
 ### 3. Open your deeplinks!
 ```js
 window.onload = function() {
