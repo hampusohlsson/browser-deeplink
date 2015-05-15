@@ -169,10 +169,11 @@
      *
      * @public
      * @param {String} Deeplink URI
+     * @return {Boolean} true, if you're on a mobile device and the link was opened
      */
     var open = function(uri) {
         if (!isMobile()) {
-            return;
+            return false;
         }
 
         if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
@@ -195,6 +196,8 @@
         iframe.src = uri;
         iframe.setAttribute("style", "display:none;");
         document.body.appendChild(iframe);
+        
+        return true;
     }
 
     // Public API
