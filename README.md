@@ -56,6 +56,13 @@ deeplink.setup({
 });
 ```
 
+or by specifying `callback: Function` in which case that callback is called when the app is not found.
+```js
+deeplink.setup({
+    callback: function() {}
+});
+```
+
 ### 3. Open your deeplinks!
 ```js
 window.onload = function() {

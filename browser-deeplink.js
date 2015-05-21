@@ -178,12 +178,14 @@
 
         if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
             var matches = uri.match(/([^:]+):\/\/(.+)$/i);
-            uri = "intent://" + matches[2] + "#Intent;scheme=" + matches[1];
-            uri += ";package=" + settings.android.appId + ";end";
+            uri = "intent://" + matches[2] + ";package=" + settings.android.appId;
+            uri += "#Intent;scheme=" + matches[1] + ";end;";
         }
 
         if (settings.fallback) {
             timeout = setTimeout(openAppStore(Date.now()), settings.delay);
+        } else if (settings.callback) {
+            timeout = setTimeout(settings.callback, settings.delay);
         }
         
         var iframe = document.createElement("iframe");
