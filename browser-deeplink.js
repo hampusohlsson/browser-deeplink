@@ -34,6 +34,7 @@
     var defaults = {
         iOS: {},
         android: {},
+        androidDisabled: false,
         fallback: true,
         delay: 1000,
         delta: 500
@@ -174,6 +175,10 @@
     var open = function(uri) {
         if (!isMobile()) {
             return false;
+        }
+
+        if (isAndroid() && settings.androidDisabled) {
+            return;
         }
 
         if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
