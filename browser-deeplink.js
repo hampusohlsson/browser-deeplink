@@ -6,7 +6,7 @@
  *
  * MIT License
  */
- 
+
 (function (root, factory) {
     if ( typeof define === 'function' && define.amd ) {
         define("deeplink", factory(root));
@@ -16,7 +16,7 @@
         root["deeplink"] = factory(root);
     }
 })(window || this, function(root) {
- 
+
     "use strict"
 
     /**
@@ -62,12 +62,12 @@
      * Generate the app store link for iOS / Apple app store
      *
      * @private
-     * @returns {String} App store itms-apps:// link 
+     * @returns {String} App store itms-apps:// link
      */
     var getStoreURLiOS = function() {
         var baseurl = "itms-apps://itunes.apple.com/app/";
         var name = settings.iOS.appName;
-        var id = settings.iOS.appId; 
+        var id = settings.iOS.appId;
         return (id && name) ? (baseurl + name + "/id" + id + "?mt=8") : null;
     }
 
@@ -80,7 +80,7 @@
     var getStoreURLAndroid = function() {
         var baseurl = "market://details?id=";
         var id = settings.android.appId;
-        return id ? (baseurl + id) : null;        
+        return id ? (baseurl + id) : null;
     }
 
     /**
@@ -115,8 +115,8 @@
      * @returns {Boolean} true/false
      */
     var isIOS = function() {
-        return navigator.userAgent.match('iPad') || 
-               navigator.userAgent.match('iPhone') || 
+        return navigator.userAgent.match('iPad') ||
+               navigator.userAgent.match('iPhone') ||
                navigator.userAgent.match('iPod');
     }
 
@@ -133,8 +133,8 @@
     /**
      * Timeout function that tries to open the app store link.
      * The time delta comparision is to prevent the app store
-     * link from opening at a later point in time. E.g. if the 
-     * user has your app installed, opens it, and then returns 
+     * link from opening at a later point in time. E.g. if the
+     * user has your app installed, opens it, and then returns
      * to their browser later on.
      *
      * @private
@@ -181,16 +181,19 @@
             return;
         }
 
-        if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
+        if (isAndroid() && !navigator.userAgent.match(/Firefox|OPR/)) {
             var matches = uri.match(/([^:]+):\/\/(.+)$/i);
             uri = "intent://" + matches[2] + "#Intent;scheme=" + matches[1];
-            uri += ";package=" + settings.android.appId + ";end";
+            uri += ";package=" + settings.android.appId + ";";
+            uri += "S.browser_fallback_url=" + getStoreURLAndroid() + ";end";
+        } else if (isAndroid() && navigator.userAgent.match(/OPR/)) {
+          uri = getStoreURLAndroid();
         }
 
         if (settings.fallback) {
             timeout = setTimeout(openAppStore(Date.now()), settings.delay);
         }
-        
+
         var iframe = document.createElement("iframe");
         iframe.onload = function() {
             clearTimeout(timeout);
@@ -201,7 +204,7 @@
         iframe.src = uri;
         iframe.setAttribute("style", "display:none;");
         document.body.appendChild(iframe);
-        
+
         return true;
     }
 
