@@ -36,6 +36,7 @@
         android: {},
         androidDisabled: false,
         fallback: true,
+        fallbackToWeb: false,
         delay: 1000,
         delta: 500
     }
@@ -99,6 +100,22 @@
     }
 
     /**
+     * Get web fallback link, depending on the current platform
+     * If none is set, default to current url
+     *
+     * @private
+     * @returns {String} url
+     */
+    var getWebLink = function() {
+        var linkmap = {
+            "ios": settings.iOS.fallbackWebUrl || location.href,
+            "android": settings.android.fallbackWebUrl || location.href
+        }
+
+        return linkmap[settings.platform];
+    }
+
+    /**
      * Check if the user-agent is Android
      *
      * @private
@@ -131,7 +148,9 @@
     }
 
     /**
-     * Timeout function that tries to open the app store link.
+     * Timeout function that tries to open the fallback link.
+     * The fallback link is either the storeUrl for the platofrm
+     * or the fallbackWebUrl for the current platform.
      * The time delta comparision is to prevent the app store
      * link from opening at a later point in time. E.g. if the 
      * user has your app installed, opens it, and then returns 
@@ -141,9 +160,9 @@
      * @param {Integer} Timestamp when trying to open deeplink
      * @returns {Function} Function to be executed by setTimeout
      */
-    var openAppStore = function(ts) {
+    var openFallback = function(ts) {
         return function() {
-            var link = getStoreLink();
+            var link = (settings.fallbackToWeb) ?  getWebLink() : getStoreLink();
             var wait = settings.delay + settings.delta;
             if (typeof link === "string" && (Date.now() - ts) < wait) {
                 window.location.href = link;
@@ -187,8 +206,8 @@
             uri += ";package=" + settings.android.appId + ";end";
         }
 
-        if (settings.fallback) {
-            timeout = setTimeout(openAppStore(Date.now()), settings.delay);
+        if (settings.fallback|| settings.fallbackToWeb) {
+            timeout = setTimeout(openFallback(Date.now()), settings.delay);
         }
         
         var iframe = document.createElement("iframe");
