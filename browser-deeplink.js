@@ -211,7 +211,7 @@
         }
 
         var ua = window.navigator.userAgent;
-        if (ua.match(/CriOS/) || (ua.match(/Safari/) && (function () {
+        if (ua.match(/CriOS/) || (isIOS()) && (ua.match(/Safari/) && (function () {
               var matched = ua.match(/Version\/(\d+)/);
               try {
                   return parseInt(matched[1]) >= 9;
