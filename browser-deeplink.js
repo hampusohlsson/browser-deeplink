@@ -211,9 +211,13 @@
         }
 
         var ua = window.navigator.userAgent;
-        if (ua.match(/CriOS/) || (ua.match(/Safari/) && (function(){
+        if (ua.match(/CriOS/) || (ua.match(/Safari/) && (function () {
               var matched = ua.match(/Version\/(\d+)/);
-              return parseInt(matched[1]) >= 9;
+              try {
+                  return parseInt(matched[1]) >= 9;
+              } catch (e) {
+                  return false;
+              }
           }()))) {
             //do another approach...
             window.location.href = uri;
