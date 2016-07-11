@@ -202,8 +202,23 @@
 
         if (isAndroid() && !navigator.userAgent.match(/Firefox/)) {
             var matches = uri.match(/([^:]+):\/\/(.+)$/i);
-            uri = "intent://" + matches[2] + "#Intent;scheme=" + matches[1];
-            uri += ";package=" + settings.android.appId + ";end";
+            var uriArr = [
+                "intent://" + matches[2] + "#Intent",
+                "scheme=" + matches[1],
+                "package=" + settings.android.appId
+            ];
+            if( (function () {
+                  var ua = navigator.userAgent.match;
+                  var matched = ua.match(/Chrome\/(\d+)/);
+                  try {
+                      return parseInt(matched[1]) >= 42;
+                  } catch (e) {
+                      return false;
+                  }
+              }()) ){
+                uriArr.push('S.browser_fallback_url=' + encodeURIComponent( window.location.href ));
+            }
+            uri = uriArr.join(';') + ";end";
         }
 
         if (settings.fallback|| settings.fallbackToWeb) {
@@ -211,14 +226,26 @@
         }
 
         var ua = window.navigator.userAgent;
-        if (ua.match(/CriOS/) || (isIOS()) && (ua.match(/Safari/) && (function () {
-              var matched = ua.match(/Version\/(\d+)/);
-              try {
-                  return parseInt(matched[1]) >= 9;
-              } catch (e) {
-                  return false;
-              }
-          }()))) {
+        if (ua.match(/CriOS/) ||
+          ( isIOS() &&  ua.match(/Safari/) && (function () {
+                var matched = ua.match(/Version\/(\d+)/);
+                try {
+                    return parseInt(matched[1]) >= 9;
+                } catch (e) {
+                    return false;
+                }
+            }())
+          ) ||
+          ( isAndroid() && (function () {
+                var matched = ua.match(/Chrome\/(\d+)/);
+                try {
+                    return parseInt(matched[1]) >= 42;
+                } catch (e) {
+                    return false;
+                }
+            }())
+          )
+        ) {
             //do another approach...
             window.location.href = uri;
         } else {
