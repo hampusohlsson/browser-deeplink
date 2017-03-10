@@ -1,6 +1,8 @@
 browser-deeplink
 ================
 
+**‼️  Not maintained** - *Use at own risk*   
+
 Redirect your website users to your native Android and/or iOS app. If the user does not have the app, they are redirected to the corresponding app store page. 
 
 Such functionality is very common for apps like YouTube, Spotify etc. But it is not default functionality in mobile browsers today, and unnecessarily hard to implement. This plugin uses a workaround with a hidden `iframe` and `setTimeout()`.
