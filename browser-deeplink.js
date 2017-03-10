@@ -138,16 +138,6 @@
     }
 
     /**
-     * Check if the user is on mobile
-     *
-     * @private
-     * @returns {Boolean} true/false
-     */
-    var isMobile = function() {
-        return isAndroid() || isIOS();
-    }
-
-    /**
      * Timeout function that tries to open the fallback link.
      * The fallback link is either the storeUrl for the platofrm
      * or the fallbackWebUrl for the current platform.
@@ -168,6 +158,16 @@
                 window.location.href = link;
             }
         }
+    }
+
+    /**
+     * Check if the user is on mobile
+     *
+     * @public
+     * @returns {Boolean} true/false
+     */
+    var isMobile = function() {
+        return isAndroid() || isIOS();
     }
 
     /**
