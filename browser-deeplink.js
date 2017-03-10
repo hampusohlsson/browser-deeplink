@@ -209,17 +209,21 @@
         if (settings.fallback|| settings.fallbackToWeb) {
             timeout = setTimeout(openFallback(Date.now()), settings.delay);
         }
-        
-        var iframe = document.createElement("iframe");
-        iframe.onload = function() {
-            clearTimeout(timeout);
-            iframe.parentNode.removeChild(iframe);
-            window.location.href = uri;
-        };
 
-        iframe.src = uri;
-        iframe.setAttribute("style", "display:none;");
-        document.body.appendChild(iframe);
+        if (navigator.userAgent.match(/Chrome/)) {
+            window.location.href = uri;
+        }else{
+            var iframe = document.createElement("iframe");
+            iframe.onload = function() {
+                clearTimeout(timeout);
+                iframe.parentNode.removeChild(iframe);
+                window.location.href = uri;
+            };
+
+            iframe.src = uri;
+            iframe.setAttribute("style", "display:none;");
+            document.body.appendChild(iframe);
+        }        
         
         return true;
     }
